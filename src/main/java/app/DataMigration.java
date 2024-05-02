@@ -27,16 +27,15 @@ public class DataMigration {
         try {
             Connection connection = DriverManager.getConnection(mySQLURL, mySQLUser, mySQLPassword);
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM stop_word");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM admins");
 
             MongoDatabase mongoDatabase = MongoClients.create(mongoURL).getDatabase("antispam");
-            MongoCollection<Document> collection = mongoDatabase.getCollection("stop_word");
+            MongoCollection<Document> collection = mongoDatabase.getCollection("admins");
 
             List<Document> documents = new ArrayList<>();
             while (resultSet.next()) {
                 Document doc = new Document("id", resultSet.getString("id"))
-                        .append("for_the_group_id", resultSet.getString("for_the_group_id"))
-                        .append("word", resultSet.getString("word"));
+                        .append("name", resultSet.getString("name"));
                 documents.add(doc);
             }
 
