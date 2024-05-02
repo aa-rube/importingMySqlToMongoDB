@@ -27,17 +27,17 @@ public class DataMigration {
         try {
             Connection connection = DriverManager.getConnection(mySQLURL, mySQLUser, mySQLPassword);
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM setting;");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM tg_groups;");
 
             MongoDatabase mongoDatabase = MongoClients.create(mongoURL).getDatabase("antispam");
-            MongoCollection<Document> collection = mongoDatabase.getCollection("setting;");
+            MongoCollection<Document> collection = mongoDatabase.getCollection("tg_groups;");
 
             List<Document> documents = new ArrayList<>();
             while (resultSet.next()) {
                 Document doc = new Document("id", resultSet.getString("id"))
-                        .append("caption_length", resultSet.getString("caption_length"))
-                        .append("check_photo", resultSet.getString("check_photo"))
-                        .append("count_photo", resultSet.getString("count_photo"));
+                        .append("group_user_name", resultSet.getString("group_user_name"))
+                        .append("owner_chat_id", resultSet.getString("owner_chat_id"))
+                        .append("owner_user_name", resultSet.getString("owner_user_name"));
                 documents.add(doc);
             }
 
