@@ -27,15 +27,22 @@ public class DataMigration {
         try {
             Connection connection = DriverManager.getConnection(mySQLURL, mySQLUser, mySQLPassword);
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM admins");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM advertisers_users;");
 
             MongoDatabase mongoDatabase = MongoClients.create(mongoURL).getDatabase("antispam");
-            MongoCollection<Document> collection = mongoDatabase.getCollection("admins");
+            MongoCollection<Document> collection = mongoDatabase.getCollection("advertisers_users;");
 
             List<Document> documents = new ArrayList<>();
             while (resultSet.next()) {
                 Document doc = new Document("id", resultSet.getString("id"))
-                        .append("name", resultSet.getString("name"));
+                        .append("admin_chat_id_owner", resultSet.getString("admin_chat_id_owner"))
+                        .append("admin_user_name_owner", resultSet.getString("admin_user_name_owner"))
+                        .append("days_of_permission", resultSet.getString("days_of_permission"))
+                        .append("end_permission", resultSet.getString("end_permission"))
+                        .append("permission_to_group", resultSet.getString("permission_to_group"))
+                        .append("post_count", resultSet.getString("post_count"))
+                        .append("user_name", resultSet.getString("user_name"))
+                        .append("started", resultSet.getString("started"));
                 documents.add(doc);
             }
 
